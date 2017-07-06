@@ -9,7 +9,7 @@ curl $1:8082/clear_cache
 sleep 10
 
 #bad parameters can lead to painfully slow servers, set a timeout
-op=`echo $YCSB_RUN | sed -r 's/.*recordcount=([0-9]+).*/\1/g'`
+op=`echo $YCSB_RUN | sed -r 's/.*operationcount=([0-9]+).*/\1/g'`
 tg=`echo $YCSB_RUN | sed -r 's/.*target ([0-9]+).*/\1/g'`
 echo $op
 echo $tg
