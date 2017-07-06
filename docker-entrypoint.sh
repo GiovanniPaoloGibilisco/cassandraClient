@@ -9,11 +9,14 @@ curl $1:8082/clear_cache
 sleep 10
 
 #bad parameters can lead to painfully slow servers, set a timeout
-opcount=`echo $YCSB_RUN | sed -r 's/.*recordcount=([0-9]+).*/\1/g'`
-tgt=`echo $YCSB_RUN | sed -r 's/.*target ([0-9]+).*/\1/g'`
-limit=$(python -c "print int(2*$opcount / $tgt)")
+op=`echo $YCSB_RUN | sed -r 's/.*recordcount=([0-9]+).*/\1/g'`
+tg=`echo $YCSB_RUN | sed -r 's/.*target ([0-9]+).*/\1/g'`
+echo $op
+echo $tg
+lim=$(python -c "print int(2*$op / $tg)")
+echo $lim
 
-timeout $limit /ycsb/bin/ycsb run cassandra-cql -p hosts=$1 -jvm-args "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false "  $YCSB_RUN
+timeout $lim /ycsb/bin/ycsb run cassandra-cql -p hosts=$1 -jvm-args "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false "  $YCSB_RUN
 
 if [ $? -eq 124 ]; then
 	exit 124
