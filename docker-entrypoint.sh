@@ -4,7 +4,7 @@ set -e
 /ycsb/bin/ycsb load cassandra-cql -p hosts=$1 $YCSB_LOAD > /dev/null
 
 #drop the caches on the server
-curl $1:8082/clear_cache
+curl $1:8042/clear_cache
 
 sleep 10
 
